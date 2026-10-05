@@ -284,7 +284,6 @@ export function DocumentTable({ documents, showBorrower, user, onChange, loading
                 </span>
               </button>
             </td>
-<<<<<<< HEAD
             {showBorrower && <Td className="text-slate-400">{d.borrowerName}</Td>}
             <Td>
               <Chip cls="chip-slate">{d.category}</Chip>
@@ -294,15 +293,6 @@ export function DocumentTable({ documents, showBorrower, user, onChange, loading
                 </span>
               )}
             </Td>
-=======
-            {/* An origination file has no borrower until its application is
-                sanctioned — it shows under the applicant's name until then. */}
-            {showBorrower && <Td className="text-slate-400">
-              {d.ownerName || d.borrowerName || '—'}
-              {!d.borrowerId && d.appCode && <span className="mt-0.5 block text-[11px] text-slate-600">{d.appCode} · in origination</span>}
-            </Td>}
-            <Td><Chip cls="chip-slate">{d.category}</Chip></Td>
->>>>>>> c3cf84e4af0d206ee236e05c02aa89c706e9b399
             <Td className="text-slate-400">{d.uploadedBy}</Td>
             <Td className="whitespace-nowrap text-slate-500" title={fmtDate(d.uploadedAt, true)}>{fmtAgo(d.uploadedAt)}</Td>
             <Td>

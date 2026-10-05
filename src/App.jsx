@@ -4,7 +4,8 @@ import {
   LayoutDashboard, Users, BookOpenText, FileBarChart2, FolderCheck, LifeBuoy, Bell, LogOut,
   Search, Settings, ScrollText, UsersRound, Command, CheckCheck, ChevronRight, Menu, X, Zap, ClipboardCheck,
   BadgeCheck, Banknote, Building2, CalendarClock, Calculator, CircleDollarSign, Database, FilePlus2,
-  FileSignature, Landmark, LineChart, MapPin, PieChart, RefreshCw, Scale, ShieldAlert, TrendingUp, Wallet2, Download
+  FileSignature, Landmark, LineChart, MapPin, PieChart, RefreshCw, Scale, ShieldAlert, TrendingUp, Wallet2, Download,
+  Briefcase, BookCheck
 } from 'lucide-react';
 import { api, downloadCSV } from './api.js';
 import { ToastHost, Spinner, ErrorBoundary, ErrorNote, Chip } from './ui.jsx';
@@ -43,6 +44,9 @@ import Disbursements from './pages/Disbursements.jsx';
 import Enhancement from './pages/Enhancement.jsx';
 import Renewals from './pages/Renewals.jsx';
 import Capital from './pages/Capital.jsx';
+import UwCases from './pages/uw/Cases.jsx';
+import UwCaseWorkspace from './pages/uw/CaseWorkspace.jsx';
+import CreditLogicBook from './pages/uw/CreditLogicBook.jsx';
 
 const AuthCtx = createContext(null);
 export const useAuth = () => useContext(AuthCtx);
@@ -55,6 +59,10 @@ const NAV = [
     { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/approvals', icon: BadgeCheck, label: 'Approvals', badge: 'approvals' },
     { to: '/activity', icon: ScrollText, label: 'Audit Trail' }
+  ] },
+  { section: 'Underwriting — Phase 1', items: [
+    { to: '/uw/cases', icon: Briefcase, label: 'Underwriting cases' },
+    { to: '/uw/book', icon: BookCheck, label: 'Credit Logic Book' }
   ] },
   { section: 'LOS — Origination', items: [
     { to: '/applications/new', icon: FilePlus2, label: 'New Application' },
@@ -140,6 +148,9 @@ export default function App() {
               <Route path="/applications" element={<Applications />} />
               <Route path="/applications/new" element={<Applications autoNew />} />
               <Route path="/applications/:id" element={<ApplicationDetail />} />
+              <Route path="/uw/cases" element={<UwCases />} />
+              <Route path="/uw/cases/:id" element={<UwCaseWorkspace />} />
+              <Route path="/uw/book" element={<CreditLogicBook />} />
               <Route path="/approvals" element={<Approvals />} />
               <Route path="/investors" element={<Investors />} />
               <Route path="/sanctions" element={<Sanctions />} />

@@ -196,6 +196,92 @@ export const api = {
   health: () => req('/health')
 };
 
+/* ---- Phase 1 underwriting (/api/uw). Amounts go up as rupee strings and come
+   back as integer paise, so no figure passes through floating point. ---- */
+const C = (id) => '/uw/cases/' + id;
+export const uw = {
+  meta: () => req('/uw/meta'),
+  cases: (f) => req('/uw/cases' + qs(f)),
+  createCase: (b) => api.post('/uw/cases', b),
+  case: (id) => req(C(id)),
+  updateCase: (id, b) => api.put(C(id), b),
+  updateParty: (id, b) => api.put(C(id) + '/party', b),
+  setTerms: (id, b) => api.put(C(id) + '/terms', b),
+  readiness: (id) => req(C(id) + '/readiness'),
+  checklist: (id) => req(C(id) + '/checklist'),
+  markNa: (id, itemId, reason) => api.post(C(id) + '/checklist/' + itemId + '/not-applicable', { reason }),
+  clearNa: (id, itemId) => api.del(C(id) + '/checklist/' + itemId + '/not-applicable'),
+  history: (id) => req(C(id) + '/history'),
+  snapshot: (id, sid) => req(C(id) + '/snapshots/' + sid),
+
+  upload: (id, form) => api.upload(C(id) + '/documents', form),
+  documents: (id) => req(C(id) + '/documents'),
+  units: (id, vid, f) => req(C(id) + '/versions/' + vid + '/units' + qs(f)),
+  classify: (id, vid, b) => api.put(C(id) + '/versions/' + vid + '/classification', b),
+  reextract: (id, vid) => api.post(C(id) + '/versions/' + vid + '/extract', {}),
+
+  facts: (id, all) => req(C(id) + '/facts' + (all ? '?all=1' : '')),
+  addFact: (id, b) => api.post(C(id) + '/facts', b),
+  correctFact: (id, fid, b) => api.post(C(id) + '/facts/' + fid + '/correct', b),
+  reviewFact: (id, fid, status, note) => api.post(C(id) + '/facts/' + fid + '/review', { status, note }),
+  factHistory: (id, fid) => req(C(id) + '/facts/' + fid + '/history'),
+
+  run: (id) => api.post(C(id) + '/run', {}),
+  results: (id) => req(C(id) + '/results'),
+  resolveRecon: (id, rid, b) => api.post(C(id) + '/recons/' + rid + '/resolve', b),
+  disposition: (id, code, b) => api.post(C(id) + '/rules/' + encodeURIComponent(code) + '/disposition', b),
+  withdrawDisposition: (id, code, kind) => api.del(C(id) + '/rules/' + encodeURIComponent(code) + '/disposition/' + kind),
+
+  bank: (id) => req(C(id) + '/bank'),
+  addAccount: (id, b) => api.post(C(id) + '/bank/accounts', b),
+  previewImport: (id, b) => api.post(C(id) + '/bank/import/preview', b),
+  commitImport: (id, b) => api.post(C(id) + '/bank/import/commit', b),
+  ackStatement: (id, sid, note) => api.post(C(id) + '/bank/statements/' + sid + '/acknowledge', { note }),
+  deleteStatement: (id, sid) => api.del(C(id) + '/bank/statements/' + sid),
+  transactions: (id, f) => req(C(id) + '/bank/transactions' + qs(f)),
+  classifyTxns: (id, b) => api.post(C(id) + '/bank/transactions/classify', b),
+
+  checks: (id) => req(C(id) + '/checks'),
+  addCheck: (id, b) => api.post(C(id) + '/checks', b),
+  completeCheck: (id, cid, b) => api.post(C(id) + '/checks/' + cid + '/complete', b),
+  claims: (id) => req(C(id) + '/claims'),
+  addClaim: (id, b) => api.post(C(id) + '/claims', b),
+  updateClaim: (id, cid, b) => api.put(C(id) + '/claims/' + cid, b),
+  questions: (id) => req(C(id) + '/questions'),
+  askQuestion: (id, b) => api.post(C(id) + '/questions', b),
+  answerQuestion: (id, qid, b) => api.post(C(id) + '/questions/' + qid + '/answer', b),
+  closeQuestion: (id, qid) => api.post(C(id) + '/questions/' + qid + '/close', {}),
+
+  memo: (id) => req(C(id) + '/memo'),
+  saveMemo: (id, section, body) => api.put(C(id) + '/memo/' + section, { body }),
+  validateMemo: (id, sections) => api.post(C(id) + '/memo/validate', { sections }),
+  submit: (id, rationale) => api.post(C(id) + '/submit', { rationale }),
+  check: (id, action, rationale) => api.post(C(id) + '/check', { action, rationale }),
+  sanction: (id, b) => api.post(C(id) + '/sanction', b),
+
+  config: () => req('/uw/config'),
+  bookCreate: (kind, b) => api.post('/uw/config/' + kind, b),
+  bookUpdate: (kind, itemId, b) => api.put('/uw/config/' + kind + '/' + itemId, b),
+  bookDelete: (kind, itemId) => api.del('/uw/config/' + kind + '/' + itemId),
+  bookSubmit: (kind, itemId) => api.post('/uw/config/' + kind + '/' + itemId + '/submit', {}),
+  bookApprove: (kind, itemId, note) => api.post('/uw/config/' + kind + '/' + itemId + '/approve', { note }),
+  bookReject: (kind, itemId, note) => api.post('/uw/config/' + kind + '/' + itemId + '/reject', { note }),
+  bookRetire: (kind, itemId, note) => api.post('/uw/config/' + kind + '/' + itemId + '/retire', { note }),
+  testRule: (b) => api.post('/uw/config/rules-test', b),
+  addField: (b) => api.post('/uw/config-fields', b),
+  updateField: (code, b) => api.put('/uw/config-fields/' + code, b),
+  saveProduct: (b) => api.post('/uw/config-products', b),
+  addChecklistItem: (b) => api.post('/uw/config-checklist', b),
+  updateChecklistItem: (itemId, b) => api.put('/uw/config-checklist/' + itemId, b),
+  addSource: (b) => api.post('/uw/config-sources', b),
+  updateSource: (sid, b) => api.put('/uw/config-sources/' + sid, b),
+  addBankRule: (b) => api.post('/uw/config-bank-rules', b),
+  updateBankRule: (rid, b) => api.put('/uw/config-bank-rules/' + rid, b),
+  saveSettings: (b) => api.put('/uw/config-settings', b)
+};
+export const uwFileUrl = (id, vid, download) => BASE + C(id) + '/versions/' + vid + '/file' + (download ? '?download=1' : '');
+export const uwMemoUrl = (id, snapshotId) => BASE + C(id) + '/memo/export' + (snapshotId ? '?snapshot=' + snapshotId : '');
+
 /* Generated origination paperwork opens as a printable page in a new tab. */
 export const letterUrl = (id, kind, download) =>
   BASE + '/applications/' + id + '/letter/' + kind + (download ? '?download=1' : '');

@@ -63,9 +63,9 @@ export const STATUS = {
 };
 
 export const ROLE = {
-  director: { label: 'Director', cls: 'chip-pink', blurb: 'Checker — CAM and deviation decisions, document approval, limits, credit policy, team and data controls.' },
-  manager: { label: 'Manager', cls: 'chip-violet', blurb: 'Maker — applications, borrowers, drawdowns, payments and document uploads.' },
-  analyst: { label: 'Analyst', cls: 'chip-cyan', blurb: 'Read-only — dashboard, pipeline, ledger, MIS and documents.' },
+  director: { label: 'Director', cls: 'chip-pink', blurb: 'Checker — CAM and deviation decisions, document approval, limits, credit policy, team and data controls. Underwriting: sanction authority and checker; signs Credit Logic Book changes.' },
+  manager: { label: 'Manager', cls: 'chip-violet', blurb: 'Maker — applications, borrowers, drawdowns, payments and document uploads. Underwriting: checker; signs Credit Logic Book changes.' },
+  analyst: { label: 'Analyst', cls: 'chip-cyan', blurb: 'Read-only for lending operations. Underwriting: maker — works cases (evidence, facts, bank analysis, checks, memo) and submits them.' },
   accounts: { label: 'Accounts', cls: 'chip-warn', blurb: 'Executes approved disbursements and value-dates them. No origination or approval rights.' }
 };
 
