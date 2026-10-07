@@ -4,7 +4,7 @@ import { ChevronRight, ClipboardCheck, Download, FilePlus2, Plus, Search, Slider
 import { api, downloadCSV } from '../api.js';
 import { useAuth } from '../App.jsx';
 import {
-  Card, Chip, Empty, ErrorNote, Field, Modal, PageHead, Spinner, Stat, Table, Td, useToast
+  Card, Chip, Empty, ErrorNote, Field, Modal, PageHead, Spinner, Stat, Table, Tabs, Td, useToast
 } from '../ui.jsx';
 import { ProductChip, StageChip, VerdictChip } from '../components/LosChips.jsx';
 import { useDebounced, useLoad, useLocal } from '../hooks.js';
